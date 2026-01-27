@@ -12,6 +12,7 @@ struct HomeView: View {
     @State private var showSubcategories = false
     @State private var animateCards = false
     @State private var searchText = ""
+    @State private var showProfile = false
     
     // Filtered subcategories based on search
     private var filteredSubcategories: [Subcategory] {
@@ -62,6 +63,9 @@ struct HomeView: View {
             .sheet(isPresented: $appViewModel.showPaywall) {
                 PaywallView()
             }
+            .sheet(isPresented: $showProfile) {
+                ProfileView()
+            }
             .onAppear {
                 if appViewModel.categories.isEmpty {
                     Task {
@@ -78,6 +82,21 @@ struct HomeView: View {
     private var headerSection: some View {
         VStack(spacing: Spacing.md) {
             if appViewModel.selectedCategory == nil {
+                // Profile button at top right
+                HStack {
+                    Spacer()
+                    
+                    Button {
+                        showProfile = true
+                    } label: {
+                        Image(systemName: appViewModel.hasActiveSubscription ? "person.crop.circle.fill.badge.checkmark" : "person.crop.circle.fill")
+                            .font(.system(size: 28))
+                            .foregroundColor(.white)
+                            .shadow(color: Color.black.opacity(0.2), radius: 4, x: 0, y: 2)
+                    }
+                }
+                .padding(.horizontal)
+                
                 // Main header - centered with shadow
                 VStack(spacing: Spacing.sm) {
                     VStack(spacing: Spacing.xs) {
@@ -98,7 +117,6 @@ struct HomeView: View {
                         .tracking(1.5)
                 }
                 .frame(maxWidth: .infinity)
-                .padding(.top, Spacing.md)
                 
             } else {
                 // Subcategory header with back button
