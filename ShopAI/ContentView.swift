@@ -2,20 +2,18 @@
 //  ContentView.swift
 //  ShopAI
 //
-//  Created by Hakan Alsancak on 27/01/2026.
+//  Main entry point view
 //
 
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject private var appViewModel = AppViewModel()
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
-        }
-        .padding()
+        HomeView()
+            .environmentObject(appViewModel)
+            .preferredColorScheme(.light) // Force light mode for consistent branding
     }
 }
 
