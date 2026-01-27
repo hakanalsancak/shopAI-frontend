@@ -58,28 +58,28 @@ struct CategoryGridCard: View {
     
     var body: some View {
         Button(action: action) {
-            VStack(spacing: Spacing.md) {
+            VStack(spacing: Spacing.sm) {
                 // Icon
                 Image(systemName: category.icon)
-                    .font(.system(size: 32))
+                    .font(.system(size: 26))
                     .foregroundColor(.shopaiPrimary)
-                    .frame(width: 60, height: 60)
+                    .frame(width: 50, height: 50)
                     .background(Color.shopaiPrimary.opacity(0.1))
-                    .cornerRadius(CornerRadius.large)
+                    .cornerRadius(CornerRadius.medium)
                 
                 // Category name
                 Text(category.name)
-                    .font(.shopaiHeadline)
+                    .font(.shopaiCallout)
                     .foregroundColor(.shopaiCardTextPrimary)
                     .multilineTextAlignment(.center)
                     .lineLimit(2)
                     .minimumScaleFactor(0.8)
             }
             .frame(maxWidth: .infinity)
-            .frame(height: 140)
-            .padding(Spacing.md)
+            .frame(height: 110)
+            .padding(Spacing.sm)
             .background(Color.white)
-            .cornerRadius(CornerRadius.extraLarge)
+            .cornerRadius(CornerRadius.large)
             .shopaiCardShadow()
         }
         .buttonStyle(PlainButtonStyle())
@@ -96,21 +96,25 @@ struct SubcategoryCard: View {
         Button(action: action) {
             VStack(spacing: Spacing.sm) {
                 Image(systemName: subcategory.icon)
-                    .font(.title)
+                    .font(.system(size: 24))
                     .foregroundColor(.shopaiPrimary)
-                    .frame(width: 60, height: 60)
+                    .frame(width: 50, height: 50)
                     .background(Color.shopaiPrimary.opacity(0.1))
-                    .cornerRadius(CornerRadius.large)
+                    .cornerRadius(CornerRadius.medium)
                 
                 Text(subcategory.name)
-                    .font(.shopaiCallout)
+                    .font(.shopaiCaption)
                     .foregroundColor(.shopaiCardTextPrimary)
                     .multilineTextAlignment(.center)
                     .lineLimit(2)
+                    .minimumScaleFactor(0.8)
             }
             .frame(maxWidth: .infinity)
-            .padding(Spacing.md)
-            .shopaiCard()
+            .frame(height: 100)
+            .padding(Spacing.sm)
+            .background(Color.white)
+            .cornerRadius(CornerRadius.large)
+            .shopaiCardShadow()
         }
         .buttonStyle(PlainButtonStyle())
     }
