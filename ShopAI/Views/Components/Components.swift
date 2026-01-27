@@ -129,7 +129,7 @@ struct OptionButton: View {
                 if let icon = option.icon {
                     Image(systemName: icon)
                         .font(.title3)
-                        .foregroundColor(isSelected ? .shopaiPrimary : .shopaiCardTextSecondary)
+                        .foregroundColor(.shopaiCardTextSecondary)
                         .frame(width: 28)
                 }
                 
@@ -139,7 +139,7 @@ struct OptionButton: View {
                 
                 Spacer()
                 
-                // Selection indicator
+                // Selection indicator - only this turns blue
                 ZStack {
                     Circle()
                         .stroke(isSelected ? Color.shopaiPrimary : Color.gray.opacity(0.3), lineWidth: 2)
@@ -157,10 +157,10 @@ struct OptionButton: View {
             .padding(Spacing.md)
             .background(
                 RoundedRectangle(cornerRadius: CornerRadius.medium)
-                    .fill(isSelected ? Color.shopaiPrimary.opacity(0.08) : Color.shopaiCardBackground)
+                    .fill(Color.white)
                     .overlay(
                         RoundedRectangle(cornerRadius: CornerRadius.medium)
-                            .stroke(isSelected ? Color.shopaiPrimary : Color.gray.opacity(0.2), lineWidth: isSelected ? 2 : 1)
+                            .stroke(Color.gray.opacity(0.2), lineWidth: 1)
                     )
             )
         }
@@ -184,7 +184,7 @@ struct MultiSelectOptionButton: View {
                 
                 Spacer()
                 
-                // Checkbox
+                // Checkbox - only this turns blue
                 ZStack {
                     RoundedRectangle(cornerRadius: 6)
                         .stroke(isSelected ? Color.shopaiPrimary : Color.gray.opacity(0.3), lineWidth: 2)
@@ -205,10 +205,10 @@ struct MultiSelectOptionButton: View {
             .padding(Spacing.md)
             .background(
                 RoundedRectangle(cornerRadius: CornerRadius.medium)
-                    .fill(isSelected ? Color.shopaiPrimary.opacity(0.08) : Color.shopaiCardBackground)
+                    .fill(Color.white)
                     .overlay(
                         RoundedRectangle(cornerRadius: CornerRadius.medium)
-                            .stroke(isSelected ? Color.shopaiPrimary : Color.gray.opacity(0.2), lineWidth: isSelected ? 2 : 1)
+                            .stroke(Color.gray.opacity(0.2), lineWidth: 1)
                     )
             )
         }
