@@ -172,6 +172,9 @@ struct QuestionFlowView: View {
             
         case .range:
             rangeView(for: question)
+            
+        case .textInput:
+            textInputView(for: question)
         }
     }
     
@@ -235,6 +238,50 @@ struct QuestionFlowView: View {
             viewModel: viewModel,
             currency: appViewModel.currency
         )
+    }
+    
+    // MARK: - Text Input View
+    
+    private func textInputView(for question: Question) -> some View {
+        TextInputQuestionView(
+            question: question,
+            viewModel: viewModel
+        )
+    }
+}
+
+// MARK: - Text Input Question View
+
+struct TextInputQuestionView: View {
+    let question: Question
+    @ObservedObject var viewModel: SearchViewModel
+    
+    @State private var textValue: String = ""
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: Spacing.md) {
+            Text("Type what you're looking for")
+                .font(.shopaiCaption)
+                .foregroundColor(.white.opacity(0.85))
+            
+            TextField(question.placeholder ?? "Enter your search...", text: $textValue)
+                .font(.shopaiBody)
+                .foregroundColor(.shopaiCardTextPrimary)
+                .padding(Spacing.md)
+                .background(Color.white)
+                .cornerRadius(CornerRadius.medium)
+                .onChange(of: textValue) { _, newValue in
+                    viewModel.setAnswer(.string(newValue), for: question.id)
+                }
+            
+            Text("Be specific for better results")
+                .font(.shopaiCaption)
+                .foregroundColor(.white.opacity(0.6))
+        }
+        .onAppear {
+            // Load existing value if any
+            textValue = viewModel.getStringAnswer(for: question.id) ?? ""
+        }
     }
 }
 

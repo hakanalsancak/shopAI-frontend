@@ -11,6 +11,16 @@ struct HomeView: View {
     @EnvironmentObject var appViewModel: AppViewModel
     @State private var showSubcategories = false
     @State private var animateCards = false
+    @State private var searchText = ""
+    
+    // Filtered subcategories based on search
+    private var filteredSubcategories: [Subcategory] {
+        guard let subcategories = appViewModel.selectedCategory?.subcategories else { return [] }
+        if searchText.isEmpty {
+            return subcategories
+        }
+        return subcategories.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
+    }
     
     var body: some View {
         NavigationStack {
@@ -69,16 +79,24 @@ struct HomeView: View {
         VStack(spacing: Spacing.md) {
             if appViewModel.selectedCategory == nil {
                 // Main header - centered with shadow
-                VStack(spacing: Spacing.xs) {
-                    Text("Find Your")
-                        .font(.system(size: 32, weight: .bold, design: .rounded))
-                        .foregroundColor(.white)
+                VStack(spacing: Spacing.sm) {
+                    VStack(spacing: Spacing.xs) {
+                        Text("Find Your")
+                            .font(.system(size: 32, weight: .bold, design: .rounded))
+                            .foregroundColor(.white)
+                        
+                        Text("Perfect Product")
+                            .font(.system(size: 32, weight: .bold, design: .rounded))
+                            .foregroundColor(.white)
+                    }
+                    .shadow(color: Color.black.opacity(0.25), radius: 8, x: 0, y: 4)
                     
-                    Text("Perfect Product")
-                        .font(.system(size: 32, weight: .bold, design: .rounded))
-                        .foregroundColor(.white)
+                    // Slogan
+                    Text("Powered by AI")
+                        .font(.system(size: 14, weight: .medium, design: .rounded))
+                        .foregroundColor(.white.opacity(0.85))
+                        .tracking(1.5)
                 }
-                .shadow(color: Color.black.opacity(0.25), radius: 8, x: 0, y: 4)
                 .frame(maxWidth: .infinity)
                 .padding(.top, Spacing.md)
                 
@@ -88,6 +106,7 @@ struct HomeView: View {
                     Button {
                         withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
                             appViewModel.selectedCategory = nil
+                            searchText = ""
                         }
                     } label: {
                         HStack(spacing: 4) {
@@ -102,14 +121,32 @@ struct HomeView: View {
                 }
                 .padding(.horizontal)
                 
-                VStack(alignment: .leading, spacing: Spacing.xs) {
+                VStack(alignment: .leading, spacing: Spacing.sm) {
                     Text(appViewModel.selectedCategory?.name ?? "")
                         .font(.shopaiTitle2)
                         .foregroundColor(.shopaiTextPrimary)
                     
-                    Text("Choose a subcategory")
-                        .font(.shopaiSubheadline)
-                        .foregroundColor(.shopaiTextSecondary)
+                    // Search bar
+                    HStack(spacing: Spacing.sm) {
+                        Image(systemName: "magnifyingglass")
+                            .foregroundColor(.shopaiCardTextSecondary)
+                        
+                        TextField("Search subcategories...", text: $searchText)
+                            .font(.shopaiBody)
+                            .foregroundColor(.shopaiCardTextPrimary)
+                        
+                        if !searchText.isEmpty {
+                            Button {
+                                searchText = ""
+                            } label: {
+                                Image(systemName: "xmark.circle.fill")
+                                    .foregroundColor(.shopaiCardTextSecondary)
+                            }
+                        }
+                    }
+                    .padding(Spacing.sm)
+                    .background(Color.white)
+                    .cornerRadius(CornerRadius.medium)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal)
@@ -152,18 +189,39 @@ struct HomeView: View {
             GridItem(.flexible())
         ]
         
-        return LazyVGrid(columns: columns, spacing: Spacing.md) {
-            ForEach(Array((appViewModel.selectedCategory?.subcategories ?? []).enumerated()), id: \.element.id) { index, subcategory in
-                SubcategoryCard(subcategory: subcategory) {
-                    appViewModel.selectSubcategory(subcategory)
+        return VStack(spacing: Spacing.md) {
+            if filteredSubcategories.isEmpty && !searchText.isEmpty {
+                // No results found
+                VStack(spacing: Spacing.md) {
+                    Image(systemName: "magnifyingglass")
+                        .font(.system(size: 40))
+                        .foregroundColor(.white.opacity(0.5))
+                    
+                    Text("No subcategories found")
+                        .font(.shopaiBody)
+                        .foregroundColor(.white.opacity(0.7))
+                    
+                    Text("Try a different search term")
+                        .font(.shopaiCaption)
+                        .foregroundColor(.white.opacity(0.5))
                 }
-                .opacity(animateCards ? 1 : 0)
-                .offset(y: animateCards ? 0 : 20)
-                .animation(
-                    .spring(response: 0.4, dampingFraction: 0.8)
-                    .delay(Double(index) * 0.05),
-                    value: animateCards
-                )
+                .padding(.top, Spacing.xl)
+            } else {
+                LazyVGrid(columns: columns, spacing: Spacing.md) {
+                    ForEach(Array(filteredSubcategories.enumerated()), id: \.element.id) { index, subcategory in
+                        SubcategoryCard(subcategory: subcategory) {
+                            searchText = ""
+                            appViewModel.selectSubcategory(subcategory)
+                        }
+                        .opacity(animateCards ? 1 : 0)
+                        .offset(y: animateCards ? 0 : 20)
+                        .animation(
+                            .spring(response: 0.4, dampingFraction: 0.8)
+                            .delay(Double(index) * 0.03),
+                            value: animateCards
+                        )
+                    }
+                }
             }
         }
         .padding(.horizontal)

@@ -94,6 +94,7 @@ struct Question: Codable, Identifiable {
     let options: [QuestionOption]?
     let rangeConfig: RangeConfig?
     let dynamicOptions: Bool?
+    let placeholder: String?
 }
 
 enum QuestionType: String, Codable {
@@ -101,6 +102,7 @@ enum QuestionType: String, Codable {
     case multiSelect = "multi_select"
     case range
     case brandSelect = "brand_select"
+    case textInput = "text_input"
 }
 
 struct QuestionOption: Codable, Identifiable {
