@@ -7,24 +7,24 @@
 
 import SwiftUI
 
-// MARK: - Color Palette (Blue-themed, professional)
+// MARK: - Color Palette (Blue background with white theme)
 
 extension Color {
-    // Primary Blue Gradient
-    static let shopaiPrimary = Color(red: 0.12, green: 0.46, blue: 0.90) // #1F75E6
-    static let shopaiPrimaryDark = Color(red: 0.08, green: 0.33, blue: 0.72) // #1454B8
-    static let shopaiPrimaryLight = Color(red: 0.35, green: 0.62, blue: 0.95) // #599EF2
+    // Primary Color - #0063FF
+    static let shopaiPrimary = Color(red: 0.0, green: 0.388, blue: 1.0) // #0063FF
+    static let shopaiPrimaryDark = Color(red: 0.0, green: 0.30, blue: 0.85) // Darker variant
+    static let shopaiPrimaryLight = Color(red: 0.3, green: 0.55, blue: 1.0) // Lighter variant
     
     // Secondary
-    static let shopaiAccent = Color(red: 0.0, green: 0.82, blue: 0.75) // #00D1BF - Teal accent
+    static let shopaiAccent = Color.white // White accent for contrast
     
     // Backgrounds
-    static let shopaiBackground = Color(red: 0.96, green: 0.97, blue: 0.99) // #F5F7FC
+    static let shopaiBackground = Color(red: 0.0, green: 0.388, blue: 1.0) // #0063FF - Main blue background
     static let shopaiCardBackground = Color.white
     
-    // Text
-    static let shopaiTextPrimary = Color(red: 0.12, green: 0.14, blue: 0.20) // #1E2433
-    static let shopaiTextSecondary = Color(red: 0.45, green: 0.49, blue: 0.56) // #737D8F
+    // Text - White for visibility on blue background
+    static let shopaiTextPrimary = Color.white
+    static let shopaiTextSecondary = Color.white.opacity(0.85)
     
     // Status
     static let shopaiSuccess = Color(red: 0.18, green: 0.74, blue: 0.42) // #2EBD6B
@@ -33,6 +33,10 @@ extension Color {
     
     // Prime badge
     static let amazonPrime = Color(red: 1.0, green: 0.60, blue: 0.0) // #FF9900
+    
+    // Card text colors (for white card backgrounds)
+    static let shopaiCardTextPrimary = Color(red: 0.12, green: 0.14, blue: 0.20) // Dark text for cards
+    static let shopaiCardTextSecondary = Color(red: 0.45, green: 0.49, blue: 0.56) // Secondary text for cards
 }
 
 // MARK: - Gradients
@@ -45,13 +49,13 @@ extension LinearGradient {
     )
     
     static let shopaiCardGradient = LinearGradient(
-        colors: [Color.shopaiCardBackground, Color.shopaiBackground.opacity(0.5)],
+        colors: [Color.shopaiCardBackground, Color.white.opacity(0.95)],
         startPoint: .top,
         endPoint: .bottom
     )
     
     static let shopaiAccentGradient = LinearGradient(
-        colors: [Color.shopaiAccent, Color.shopaiPrimary],
+        colors: [Color.white, Color.white.opacity(0.8)],
         startPoint: .leading,
         endPoint: .trailing
     )
@@ -76,15 +80,15 @@ extension Font {
 
 extension View {
     func shopaiCardShadow() -> some View {
-        self.shadow(color: Color.black.opacity(0.08), radius: 12, x: 0, y: 4)
+        self.shadow(color: Color.black.opacity(0.15), radius: 12, x: 0, y: 4)
     }
     
     func shopaiButtonShadow() -> some View {
-        self.shadow(color: Color.shopaiPrimary.opacity(0.3), radius: 8, x: 0, y: 4)
+        self.shadow(color: Color.black.opacity(0.2), radius: 8, x: 0, y: 4)
     }
     
     func shopaiSubtleShadow() -> some View {
-        self.shadow(color: Color.black.opacity(0.04), radius: 4, x: 0, y: 2)
+        self.shadow(color: Color.black.opacity(0.08), radius: 4, x: 0, y: 2)
     }
 }
 
@@ -116,15 +120,15 @@ struct ShopAIPrimaryButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.shopaiHeadline)
-            .foregroundColor(.white)
+            .foregroundColor(.shopaiPrimary)
             .frame(maxWidth: .infinity)
             .padding(.vertical, Spacing.md)
             .background(
                 Group {
                     if isDisabled {
-                        Color.gray.opacity(0.3)
+                        Color.white.opacity(0.3)
                     } else {
-                        LinearGradient.shopaiPrimaryGradient
+                        Color.white
                     }
                 }
             )
@@ -142,10 +146,10 @@ struct ShopAISecondaryButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.shopaiHeadline)
-            .foregroundColor(.shopaiPrimary)
+            .foregroundColor(.white)
             .frame(maxWidth: .infinity)
             .padding(.vertical, Spacing.md)
-            .background(Color.shopaiPrimary.opacity(0.1))
+            .background(Color.white.opacity(0.2))
             .cornerRadius(CornerRadius.medium)
             .scaleEffect(configuration.isPressed ? 0.98 : 1.0)
             .animation(.spring(response: 0.2, dampingFraction: 0.7), value: configuration.isPressed)
@@ -178,10 +182,10 @@ struct SelectionCardStyle: ButtonStyle {
         configuration.label
             .background(
                 RoundedRectangle(cornerRadius: CornerRadius.large)
-                    .fill(isSelected ? Color.shopaiPrimary.opacity(0.1) : Color.shopaiCardBackground)
+                    .fill(Color.white)
                     .overlay(
                         RoundedRectangle(cornerRadius: CornerRadius.large)
-                            .stroke(isSelected ? Color.shopaiPrimary : Color.clear, lineWidth: 2)
+                            .stroke(isSelected ? Color.shopaiPrimary : Color.clear, lineWidth: 3)
                     )
             )
             .shopaiCardShadow()

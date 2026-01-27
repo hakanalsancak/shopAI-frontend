@@ -29,32 +29,9 @@ struct HomeView: View {
                     }
                 } else {
                     ScrollView {
-                        VStack(spacing: Spacing.lg) {
+                        VStack(spacing: Spacing.xl) {
                             // Header
                             headerSection
-                            
-                            // Status Badge
-                            HStack {
-                                SearchStatusBadge(
-                                    remainingSearches: appViewModel.freeSearchesRemaining,
-                                    hasSubscription: appViewModel.hasActiveSubscription
-                                )
-                                
-                                Spacer()
-                                
-                                Button {
-                                    appViewModel.showPaywall = true
-                                } label: {
-                                    HStack(spacing: 4) {
-                                        Image(systemName: "crown.fill")
-                                            .font(.caption)
-                                        Text("Upgrade")
-                                            .font(.shopaiCaption.weight(.semibold))
-                                    }
-                                    .foregroundColor(.shopaiPrimary)
-                                }
-                            }
-                            .padding(.horizontal)
                             
                             // Category Cards
                             if appViewModel.selectedCategory == nil {
@@ -65,7 +42,7 @@ struct HomeView: View {
                             
                             Spacer(minLength: Spacing.xxl)
                         }
-                        .padding(.top)
+                        .padding(.top, Spacing.md)
                     }
                 }
             }
@@ -89,40 +66,21 @@ struct HomeView: View {
     // MARK: - Header Section
     
     private var headerSection: some View {
-        VStack(spacing: Spacing.sm) {
+        VStack(spacing: Spacing.md) {
             if appViewModel.selectedCategory == nil {
-                // Main header
-                HStack {
-                    VStack(alignment: .leading, spacing: Spacing.xs) {
-                        Text("Find Your")
-                            .font(.shopaiTitle)
-                            .foregroundColor(.shopaiTextPrimary)
-                        
-                        Text("Perfect Product")
-                            .font(.shopaiTitle)
-                            .foregroundStyle(LinearGradient.shopaiPrimaryGradient)
-                    }
+                // Main header - centered with shadow
+                VStack(spacing: Spacing.xs) {
+                    Text("Find Your")
+                        .font(.system(size: 32, weight: .bold, design: .rounded))
+                        .foregroundColor(.white)
                     
-                    Spacer()
-                    
-                    // AI Badge
-                    HStack(spacing: 4) {
-                        Image(systemName: "sparkles")
-                        Text("AI")
-                    }
-                    .font(.caption.weight(.bold))
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 6)
-                    .background(LinearGradient.shopaiPrimaryGradient)
-                    .cornerRadius(CornerRadius.small)
+                    Text("Perfect Product")
+                        .font(.system(size: 32, weight: .bold, design: .rounded))
+                        .foregroundColor(.white)
                 }
-                .padding(.horizontal)
-                
-                Text("Get personalized recommendations powered by AI")
-                    .font(.shopaiSubheadline)
-                    .foregroundColor(.shopaiTextSecondary)
-                    .padding(.horizontal)
+                .shadow(color: Color.black.opacity(0.25), radius: 8, x: 0, y: 4)
+                .frame(maxWidth: .infinity)
+                .padding(.top, Spacing.md)
                 
             } else {
                 // Subcategory header with back button
@@ -137,7 +95,7 @@ struct HomeView: View {
                             Text("Back")
                         }
                         .font(.shopaiCallout)
-                        .foregroundColor(.shopaiPrimary)
+                        .foregroundColor(.white)
                     }
                     
                     Spacer()
@@ -162,14 +120,18 @@ struct HomeView: View {
     // MARK: - Categories Section
     
     private var categoriesSection: some View {
-        VStack(spacing: Spacing.sm) {
+        let columns = [
+            GridItem(.flexible(), spacing: Spacing.md),
+            GridItem(.flexible(), spacing: Spacing.md)
+        ]
+        
+        return LazyVGrid(columns: columns, spacing: Spacing.md) {
             ForEach(Array(appViewModel.categories.enumerated()), id: \.element.id) { index, category in
-                CategoryCard(category: category) {
+                CategoryGridCard(category: category) {
                     withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
                         appViewModel.selectCategory(category)
                     }
                 }
-                .padding(.horizontal)
                 .opacity(animateCards ? 1 : 0)
                 .offset(y: animateCards ? 0 : 20)
                 .animation(
@@ -179,6 +141,7 @@ struct HomeView: View {
                 )
             }
         }
+        .padding(.horizontal)
     }
     
     // MARK: - Subcategories Section

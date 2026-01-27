@@ -18,13 +18,9 @@ struct PaywallView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                // Gradient background
-                LinearGradient(
-                    colors: [Color.shopaiPrimary.opacity(0.1), Color.shopaiBackground],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-                .ignoresSafeArea()
+                // Blue background
+                Color.shopaiBackground
+                    .ignoresSafeArea()
                 
                 if viewModel.showSuccessAnimation {
                     successView
@@ -51,7 +47,7 @@ struct PaywallView: View {
                             } label: {
                                 Text("Restore Purchases")
                                     .font(.shopaiSubheadline)
-                                    .foregroundColor(.shopaiPrimary)
+                                    .foregroundColor(.white)
                             }
                             .padding(.top, Spacing.sm)
                             
@@ -72,7 +68,7 @@ struct PaywallView: View {
                     } label: {
                         Image(systemName: "xmark.circle.fill")
                             .font(.title2)
-                            .foregroundColor(.gray.opacity(0.5))
+                            .foregroundColor(.white.opacity(0.7))
                     }
                 }
             }
@@ -240,23 +236,23 @@ struct PaywallView: View {
         VStack(spacing: Spacing.xs) {
             Text("Subscriptions auto-renew. Cancel anytime in Settings.")
                 .font(.caption)
-                .foregroundColor(.shopaiTextSecondary)
+                .foregroundColor(.white.opacity(0.7))
             
             HStack(spacing: Spacing.md) {
                 Button("Terms of Service") {
                     // Open terms
                 }
                 .font(.caption)
-                .foregroundColor(.shopaiPrimary)
+                .foregroundColor(.white)
                 
                 Text("•")
-                    .foregroundColor(.shopaiTextSecondary)
+                    .foregroundColor(.white.opacity(0.7))
                 
                 Button("Privacy Policy") {
                     // Open privacy
                 }
                 .font(.caption)
-                .foregroundColor(.shopaiPrimary)
+                .foregroundColor(.white)
             }
         }
         .padding(.top, Spacing.md)
@@ -313,11 +309,11 @@ struct FeatureRow: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(title)
                     .font(.shopaiHeadline)
-                    .foregroundColor(.shopaiTextPrimary)
+                    .foregroundColor(.shopaiCardTextPrimary)
                 
                 Text(subtitle)
                     .font(.shopaiCaption)
-                    .foregroundColor(.shopaiTextSecondary)
+                    .foregroundColor(.shopaiCardTextSecondary)
             }
             
             Spacer()
@@ -343,7 +339,7 @@ struct PlanCard: View {
                     HStack {
                         Text(plan.name)
                             .font(.shopaiHeadline)
-                            .foregroundColor(.shopaiTextPrimary)
+                            .foregroundColor(.shopaiCardTextPrimary)
                         
                         if let badge = plan.badge {
                             Text(badge)
@@ -358,7 +354,7 @@ struct PlanCard: View {
                     
                     Text(plan.period == "yearly" ? "Save 90% vs weekly" : "Flexible weekly billing")
                         .font(.shopaiCaption)
-                        .foregroundColor(.shopaiTextSecondary)
+                        .foregroundColor(.shopaiCardTextSecondary)
                 }
                 
                 Spacer()
@@ -370,16 +366,16 @@ struct PlanCard: View {
                     
                     Text(plan.periodLabel)
                         .font(.shopaiCaption)
-                        .foregroundColor(.shopaiTextSecondary)
+                        .foregroundColor(.shopaiCardTextSecondary)
                 }
             }
             .padding()
             .background(
                 RoundedRectangle(cornerRadius: CornerRadius.large)
-                    .fill(isSelected ? Color.shopaiPrimary.opacity(0.1) : Color.shopaiCardBackground)
+                    .fill(Color.white)
                     .overlay(
                         RoundedRectangle(cornerRadius: CornerRadius.large)
-                            .stroke(isSelected ? Color.shopaiPrimary : Color.clear, lineWidth: 2)
+                            .stroke(isSelected ? Color.shopaiPrimary : Color.clear, lineWidth: 3)
                     )
             )
             .shopaiSubtleShadow()
@@ -402,7 +398,7 @@ struct StoreKitPlanCard: View {
                     HStack {
                         Text(product.displayName)
                             .font(.shopaiHeadline)
-                            .foregroundColor(.shopaiTextPrimary)
+                            .foregroundColor(.shopaiCardTextPrimary)
                         
                         if product.isYearly {
                             Text("Best Value")
@@ -417,7 +413,7 @@ struct StoreKitPlanCard: View {
                     
                     Text(product.description)
                         .font(.shopaiCaption)
-                        .foregroundColor(.shopaiTextSecondary)
+                        .foregroundColor(.shopaiCardTextSecondary)
                         .lineLimit(1)
                 }
                 
@@ -430,16 +426,16 @@ struct StoreKitPlanCard: View {
                     
                     Text(product.periodLabel)
                         .font(.shopaiCaption)
-                        .foregroundColor(.shopaiTextSecondary)
+                        .foregroundColor(.shopaiCardTextSecondary)
                 }
             }
             .padding()
             .background(
                 RoundedRectangle(cornerRadius: CornerRadius.large)
-                    .fill(isSelected ? Color.shopaiPrimary.opacity(0.1) : Color.shopaiCardBackground)
+                    .fill(Color.white)
                     .overlay(
                         RoundedRectangle(cornerRadius: CornerRadius.large)
-                            .stroke(isSelected ? Color.shopaiPrimary : Color.clear, lineWidth: 2)
+                            .stroke(isSelected ? Color.shopaiPrimary : Color.clear, lineWidth: 3)
                     )
             )
             .shopaiSubtleShadow()

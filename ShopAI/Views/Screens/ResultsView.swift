@@ -65,7 +65,7 @@ struct ResultsView: View {
                             Image(systemName: "xmark")
                             Text("Close")
                         }
-                        .foregroundColor(.shopaiPrimary)
+                        .foregroundColor(.white)
                     }
                 }
                 
@@ -73,7 +73,7 @@ struct ResultsView: View {
                     VStack(spacing: 2) {
                         Text("Recommendations")
                             .font(.shopaiHeadline)
-                            .foregroundColor(.shopaiTextPrimary)
+                            .foregroundColor(.white)
                         
                         HStack(spacing: 4) {
                             Image(systemName: "sparkles")
@@ -81,7 +81,7 @@ struct ResultsView: View {
                             Text("AI Ranked")
                                 .font(.caption2)
                         }
-                        .foregroundColor(.shopaiPrimary)
+                        .foregroundColor(.white.opacity(0.85))
                     }
                 }
                 
@@ -94,7 +94,7 @@ struct ResultsView: View {
                         }
                     } label: {
                         Image(systemName: "magnifyingglass")
-                            .foregroundColor(.shopaiPrimary)
+                            .foregroundColor(.white)
                     }
                 }
             }
@@ -124,19 +124,19 @@ struct ResultsView: View {
                 
                 Text("AI Summary")
                     .font(.shopaiHeadline)
-                    .foregroundColor(.shopaiTextPrimary)
+                    .foregroundColor(.shopaiCardTextPrimary)
                 
                 Spacer()
                 
                 Text("\(results.products.count) products")
                     .font(.shopaiCaption)
-                    .foregroundColor(.shopaiTextSecondary)
+                    .foregroundColor(.shopaiCardTextSecondary)
             }
             
             // Summary text
             Text(results.summary)
                 .font(.shopaiBody)
-                .foregroundColor(.shopaiTextPrimary)
+                .foregroundColor(.shopaiCardTextPrimary)
                 .lineSpacing(4)
             
             Divider()
@@ -145,7 +145,7 @@ struct ResultsView: View {
             VStack(alignment: .leading, spacing: Spacing.sm) {
                 Text("Your preferences")
                     .font(.shopaiCaption)
-                    .foregroundColor(.shopaiTextSecondary)
+                    .foregroundColor(.shopaiCardTextSecondary)
                 
                 HStack(spacing: Spacing.sm) {
                     CriteriaTag(icon: "folder", text: results.searchCriteria.subcategory)
@@ -239,7 +239,7 @@ struct ProductCard: View {
                 VStack(alignment: .leading, spacing: Spacing.xs) {
                     Text(product.title)
                         .font(.shopaiCallout)
-                        .foregroundColor(.shopaiTextPrimary)
+                        .foregroundColor(.shopaiCardTextPrimary)
                         .lineLimit(3)
                     
                     // Rating
@@ -248,7 +248,7 @@ struct ProductCard: View {
                         
                         Text("(\(formatReviewCount(product.reviewCount)))")
                             .font(.shopaiCaption)
-                            .foregroundColor(.shopaiTextSecondary)
+                            .foregroundColor(.shopaiCardTextSecondary)
                     }
                     
                     // Price
@@ -260,7 +260,7 @@ struct ProductCard: View {
                         if let original = product.formattedOriginalPrice {
                             Text(original)
                                 .font(.shopaiSubheadline)
-                                .foregroundColor(.shopaiTextSecondary)
+                                .foregroundColor(.shopaiCardTextSecondary)
                                 .strikethrough()
                         }
                     }
@@ -272,16 +272,16 @@ struct ProductCard: View {
                 HStack {
                     Image(systemName: "sparkles")
                         .font(.caption)
-                        .foregroundColor(.shopaiAccent)
+                        .foregroundColor(.shopaiPrimary)
                     
                     Text("Why we recommend this")
                         .font(.shopaiCaption.weight(.semibold))
-                        .foregroundColor(.shopaiTextSecondary)
+                        .foregroundColor(.shopaiCardTextSecondary)
                 }
                 
                 Text(product.explanation)
                     .font(.shopaiSubheadline)
-                    .foregroundColor(.shopaiTextPrimary)
+                    .foregroundColor(.shopaiCardTextPrimary)
                     .lineSpacing(2)
             }
             
@@ -297,7 +297,7 @@ struct ProductCard: View {
                             
                             Text(pro)
                                 .font(.shopaiCaption)
-                                .foregroundColor(.shopaiTextPrimary)
+                                .foregroundColor(.shopaiCardTextPrimary)
                         }
                     }
                 }
@@ -314,7 +314,7 @@ struct ProductCard: View {
                             
                             Text(con)
                                 .font(.shopaiCaption)
-                                .foregroundColor(.shopaiTextPrimary)
+                                .foregroundColor(.shopaiCardTextPrimary)
                         }
                     }
                 }
@@ -357,9 +357,9 @@ struct RankBadge: View {
     var badgeColor: Color {
         switch rank {
         case 1: return .shopaiPrimary
-        case 2: return .shopaiAccent
+        case 2: return .shopaiSuccess
         case 3: return .shopaiWarning
-        default: return .shopaiTextSecondary
+        default: return .shopaiCardTextSecondary
         }
     }
     
@@ -380,11 +380,11 @@ struct RankBadge: View {
             VStack(alignment: .leading, spacing: 0) {
                 Text("\(score)% match")
                     .font(.shopaiCaption.weight(.semibold))
-                    .foregroundColor(.shopaiTextPrimary)
+                    .foregroundColor(.shopaiCardTextPrimary)
                 
                 Text(rank == 1 ? "Best overall" : rank <= 3 ? "Great choice" : "Good option")
                     .font(.caption2)
-                    .foregroundColor(.shopaiTextSecondary)
+                    .foregroundColor(.shopaiCardTextSecondary)
             }
         }
     }
@@ -404,10 +404,10 @@ struct CriteriaTag: View {
             Text(text)
                 .font(.shopaiCaption)
         }
-        .foregroundColor(.shopaiTextSecondary)
+        .foregroundColor(.shopaiCardTextSecondary)
         .padding(.horizontal, Spacing.sm)
         .padding(.vertical, 4)
-        .background(Color.gray.opacity(0.1))
+        .background(Color.shopaiPrimary.opacity(0.1))
         .cornerRadius(CornerRadius.small)
     }
 }

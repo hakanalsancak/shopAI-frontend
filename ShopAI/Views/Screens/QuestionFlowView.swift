@@ -49,14 +49,14 @@ struct QuestionFlowView: View {
                         Image(systemName: "chevron.left")
                         Text(viewModel.currentQuestionIndex > 0 ? "Back" : "Cancel")
                     }
-                    .foregroundColor(.shopaiPrimary)
+                    .foregroundColor(.white)
                 }
             }
             
             ToolbarItem(placement: .principal) {
                 Text(viewModel.subcategoryName)
                     .font(.shopaiHeadline)
-                    .foregroundColor(.shopaiTextPrimary)
+                    .foregroundColor(.white)
             }
         }
         .fullScreenCover(isPresented: $showResultsView) {
@@ -259,7 +259,7 @@ struct BudgetRangeView: View {
             if let presets = question.rangeConfig?.presets {
                 Text("Quick select")
                     .font(.shopaiCaption)
-                    .foregroundColor(.shopaiTextSecondary)
+                    .foregroundColor(.white.opacity(0.85))
                 
                 FlexibleView(data: presets, spacing: Spacing.sm, alignment: .leading) { preset in
                     BudgetPresetButton(
@@ -280,7 +280,7 @@ struct BudgetRangeView: View {
             VStack(spacing: Spacing.md) {
                 Text("Or set custom range")
                     .font(.shopaiCaption)
-                    .foregroundColor(.shopaiTextSecondary)
+                    .foregroundColor(.white.opacity(0.85))
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
                 // Range display
@@ -293,7 +293,7 @@ struct BudgetRangeView: View {
                     
                     Text("to")
                         .font(.shopaiBody)
-                        .foregroundColor(.shopaiTextSecondary)
+                        .foregroundColor(.shopaiCardTextSecondary)
                     
                     Spacer()
                     
@@ -302,7 +302,7 @@ struct BudgetRangeView: View {
                         .foregroundColor(.shopaiPrimary)
                 }
                 .padding()
-                .background(Color.shopaiPrimary.opacity(0.1))
+                .background(Color.white)
                 .cornerRadius(CornerRadius.medium)
                 
                 // Sliders
@@ -312,7 +312,7 @@ struct BudgetRangeView: View {
                         HStack {
                             Text("Min")
                                 .font(.shopaiCaption)
-                                .foregroundColor(.shopaiTextSecondary)
+                                .foregroundColor(.white)
                                 .frame(width: 30)
                             
                             Slider(
@@ -320,7 +320,7 @@ struct BudgetRangeView: View {
                                 in: config.min...config.max,
                                 step: config.step
                             )
-                            .tint(.shopaiPrimary)
+                            .tint(.white)
                             .onChange(of: minValue) { _, newValue in
                                 if newValue > maxValue {
                                     maxValue = newValue
@@ -334,7 +334,7 @@ struct BudgetRangeView: View {
                         HStack {
                             Text("Max")
                                 .font(.shopaiCaption)
-                                .foregroundColor(.shopaiTextSecondary)
+                                .foregroundColor(.white)
                                 .frame(width: 30)
                             
                             Slider(
@@ -342,7 +342,7 @@ struct BudgetRangeView: View {
                                 in: config.min...config.max,
                                 step: config.step
                             )
-                            .tint(.shopaiPrimary)
+                            .tint(.white)
                             .onChange(of: maxValue) { _, newValue in
                                 if newValue < minValue {
                                     minValue = newValue
@@ -385,7 +385,7 @@ struct SearchingView: View {
                 ForEach(0..<3) { index in
                     Image(systemName: "sparkle")
                         .font(.system(size: 30))
-                        .foregroundColor(.shopaiPrimary)
+                        .foregroundColor(.white)
                         .offset(
                             x: cos(Double(animationPhase + index * 120) * .pi / 180) * 40,
                             y: sin(Double(animationPhase + index * 120) * .pi / 180) * 40
@@ -395,7 +395,7 @@ struct SearchingView: View {
                 
                 Image(systemName: "magnifyingglass")
                     .font(.system(size: 40))
-                    .foregroundColor(.shopaiPrimary)
+                    .foregroundColor(.white)
                     .scaleEffect(1 + sin(Double(animationPhase) * .pi / 90) * 0.1)
             }
             .frame(width: 120, height: 120)
@@ -403,18 +403,18 @@ struct SearchingView: View {
             VStack(spacing: Spacing.sm) {
                 Text("Finding Your Perfect Products")
                     .font(.shopaiTitle3)
-                    .foregroundColor(.shopaiTextPrimary)
+                    .foregroundColor(.white)
                 
                 Text("Our AI is analyzing your preferences...")
                     .font(.shopaiBody)
-                    .foregroundColor(.shopaiTextSecondary)
+                    .foregroundColor(.white.opacity(0.85))
             }
             
             // Progress dots
             HStack(spacing: Spacing.sm) {
                 ForEach(0..<4) { index in
                     Circle()
-                        .fill(Color.shopaiPrimary)
+                        .fill(Color.white)
                         .frame(width: 10, height: 10)
                         .opacity((animationPhase / 30) % 4 == index ? 1 : 0.3)
                 }

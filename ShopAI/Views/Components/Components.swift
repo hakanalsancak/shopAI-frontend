@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-// MARK: - Category Card
+// MARK: - Category Card (List style - legacy)
 
 struct CategoryCard: View {
     let category: Category
@@ -28,11 +28,11 @@ struct CategoryCard: View {
                 VStack(alignment: .leading, spacing: Spacing.xs) {
                     Text(category.name)
                         .font(.shopaiHeadline)
-                        .foregroundColor(.shopaiTextPrimary)
+                        .foregroundColor(.shopaiCardTextPrimary)
                     
                     Text(category.description)
                         .font(.shopaiSubheadline)
-                        .foregroundColor(.shopaiTextSecondary)
+                        .foregroundColor(.shopaiCardTextSecondary)
                         .lineLimit(1)
                 }
                 
@@ -41,10 +41,46 @@ struct CategoryCard: View {
                 // Arrow
                 Image(systemName: "chevron.right")
                     .font(.subheadline.weight(.semibold))
-                    .foregroundColor(.shopaiTextSecondary)
+                    .foregroundColor(.shopaiCardTextSecondary)
             }
             .padding(Spacing.md)
             .shopaiCard()
+        }
+        .buttonStyle(PlainButtonStyle())
+    }
+}
+
+// MARK: - Category Grid Card (Square style)
+
+struct CategoryGridCard: View {
+    let category: Category
+    let action: () -> Void
+    
+    var body: some View {
+        Button(action: action) {
+            VStack(spacing: Spacing.md) {
+                // Icon
+                Image(systemName: category.icon)
+                    .font(.system(size: 32))
+                    .foregroundColor(.shopaiPrimary)
+                    .frame(width: 60, height: 60)
+                    .background(Color.shopaiPrimary.opacity(0.1))
+                    .cornerRadius(CornerRadius.large)
+                
+                // Category name
+                Text(category.name)
+                    .font(.shopaiHeadline)
+                    .foregroundColor(.shopaiCardTextPrimary)
+                    .multilineTextAlignment(.center)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.8)
+            }
+            .frame(maxWidth: .infinity)
+            .frame(height: 140)
+            .padding(Spacing.md)
+            .background(Color.white)
+            .cornerRadius(CornerRadius.extraLarge)
+            .shopaiCardShadow()
         }
         .buttonStyle(PlainButtonStyle())
     }
@@ -68,7 +104,7 @@ struct SubcategoryCard: View {
                 
                 Text(subcategory.name)
                     .font(.shopaiCallout)
-                    .foregroundColor(.shopaiTextPrimary)
+                    .foregroundColor(.shopaiCardTextPrimary)
                     .multilineTextAlignment(.center)
                     .lineLimit(2)
             }
@@ -93,13 +129,13 @@ struct OptionButton: View {
                 if let icon = option.icon {
                     Image(systemName: icon)
                         .font(.title3)
-                        .foregroundColor(isSelected ? .shopaiPrimary : .shopaiTextSecondary)
+                        .foregroundColor(isSelected ? .shopaiPrimary : .shopaiCardTextSecondary)
                         .frame(width: 28)
                 }
                 
                 Text(option.label)
                     .font(.shopaiBody)
-                    .foregroundColor(.shopaiTextPrimary)
+                    .foregroundColor(.shopaiCardTextPrimary)
                 
                 Spacer()
                 
@@ -144,7 +180,7 @@ struct MultiSelectOptionButton: View {
             HStack(spacing: Spacing.md) {
                 Text(option.label)
                     .font(.shopaiBody)
-                    .foregroundColor(.shopaiTextPrimary)
+                    .foregroundColor(.shopaiCardTextPrimary)
                 
                 Spacer()
                 
@@ -191,12 +227,12 @@ struct BudgetPresetButton: View {
         Button(action: action) {
             Text(preset.label)
                 .font(.shopaiCallout)
-                .foregroundColor(isSelected ? .white : .shopaiTextPrimary)
+                .foregroundColor(isSelected ? .shopaiPrimary : .white)
                 .padding(.horizontal, Spacing.md)
                 .padding(.vertical, Spacing.sm)
                 .background(
                     RoundedRectangle(cornerRadius: CornerRadius.small)
-                        .fill(isSelected ? Color.shopaiPrimary : Color.shopaiPrimary.opacity(0.1))
+                        .fill(isSelected ? Color.white : Color.white.opacity(0.2))
                 )
         }
         .buttonStyle(PlainButtonStyle())
@@ -236,11 +272,11 @@ struct LoadingView: View {
         VStack(spacing: Spacing.lg) {
             ProgressView()
                 .scaleEffect(1.5)
-                .tint(.shopaiPrimary)
+                .tint(.white)
             
             Text(message)
                 .font(.shopaiCallout)
-                .foregroundColor(.shopaiTextSecondary)
+                .foregroundColor(.white)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.shopaiBackground)
@@ -261,7 +297,7 @@ struct ErrorView: View {
             
             Text(message)
                 .font(.shopaiBody)
-                .foregroundColor(.shopaiTextSecondary)
+                .foregroundColor(.white)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal)
             
@@ -289,15 +325,15 @@ struct EmptyStateView: View {
         VStack(spacing: Spacing.md) {
             Image(systemName: icon)
                 .font(.system(size: 64))
-                .foregroundColor(.shopaiTextSecondary.opacity(0.5))
+                .foregroundColor(.white.opacity(0.5))
             
             Text(title)
                 .font(.shopaiTitle3)
-                .foregroundColor(.shopaiTextPrimary)
+                .foregroundColor(.white)
             
             Text(message)
                 .font(.shopaiBody)
-                .foregroundColor(.shopaiTextSecondary)
+                .foregroundColor(.white.opacity(0.85))
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, Spacing.xl)
         }
@@ -326,9 +362,7 @@ struct SearchStatusBadge: View {
         .foregroundColor(hasSubscription ? .shopaiSuccess : .shopaiPrimary)
         .padding(.horizontal, Spacing.sm)
         .padding(.vertical, Spacing.xs)
-        .background(
-            (hasSubscription ? Color.shopaiSuccess : Color.shopaiPrimary).opacity(0.1)
-        )
+        .background(Color.white)
         .cornerRadius(CornerRadius.small)
     }
 }
@@ -344,10 +378,10 @@ struct AffiliateDisclosureBanner: View {
             Text("We earn a commission from qualifying Amazon purchases")
                 .font(.shopaiCaption)
         }
-        .foregroundColor(.shopaiTextSecondary)
+        .foregroundColor(.white.opacity(0.85))
         .padding(Spacing.sm)
         .frame(maxWidth: .infinity)
-        .background(Color.gray.opacity(0.1))
+        .background(Color.white.opacity(0.15))
         .cornerRadius(CornerRadius.small)
     }
 }
