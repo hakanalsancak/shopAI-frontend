@@ -189,6 +189,9 @@ struct HomeView: View {
             GridItem(.flexible())
         ]
         
+        let isOddCount = filteredSubcategories.count % 2 == 1
+        let lastIndex = filteredSubcategories.count - 1
+        
         return VStack(spacing: Spacing.md) {
             if filteredSubcategories.isEmpty && !searchText.isEmpty {
                 // No results found
@@ -207,19 +210,43 @@ struct HomeView: View {
                 }
                 .padding(.top, Spacing.xl)
             } else {
+                // Main grid (all items except last if odd count)
                 LazyVGrid(columns: columns, spacing: Spacing.md) {
                     ForEach(Array(filteredSubcategories.enumerated()), id: \.element.id) { index, subcategory in
-                        SubcategoryCard(subcategory: subcategory) {
-                            searchText = ""
-                            appViewModel.selectSubcategory(subcategory)
+                        // Skip last item if odd count (will be centered below)
+                        if !(isOddCount && index == lastIndex) {
+                            SubcategoryCard(subcategory: subcategory) {
+                                searchText = ""
+                                appViewModel.selectSubcategory(subcategory)
+                            }
+                            .opacity(animateCards ? 1 : 0)
+                            .offset(y: animateCards ? 0 : 20)
+                            .animation(
+                                .spring(response: 0.4, dampingFraction: 0.8)
+                                .delay(Double(index) * 0.03),
+                                value: animateCards
+                            )
                         }
+                    }
+                }
+                
+                // Centered last item if odd count
+                if isOddCount && !filteredSubcategories.isEmpty {
+                    HStack {
+                        Spacer()
+                        SubcategoryCard(subcategory: filteredSubcategories[lastIndex]) {
+                            searchText = ""
+                            appViewModel.selectSubcategory(filteredSubcategories[lastIndex])
+                        }
+                        .frame(maxWidth: (UIScreen.main.bounds.width - Spacing.md * 3) / 2)
                         .opacity(animateCards ? 1 : 0)
                         .offset(y: animateCards ? 0 : 20)
                         .animation(
                             .spring(response: 0.4, dampingFraction: 0.8)
-                            .delay(Double(index) * 0.03),
+                            .delay(Double(lastIndex) * 0.03),
                             value: animateCards
                         )
+                        Spacer()
                     }
                 }
             }
