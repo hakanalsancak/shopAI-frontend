@@ -1,6 +1,6 @@
 //
-//  ShopAIApp.swift
-//  ShopAI
+//  ZokeyApp.swift
+//  Zokey
 //
 //  AI-Powered Product Recommendation App
 //
@@ -8,7 +8,7 @@
 import SwiftUI
 
 @main
-struct ShopAIApp: App {
+struct ZokeyApp: App {
     // Initialize StoreKit service early
     @StateObject private var storeKitService = StoreKitService.shared
     

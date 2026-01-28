@@ -1,6 +1,6 @@
 //
 //  QuestionFlowView.swift
-//  ShopAI
+//  Zokey
 //
 //  Step-by-step question flow for product search
 //
@@ -151,7 +151,7 @@ struct QuestionFlowView: View {
                         }
                     }
                 }
-                .buttonStyle(ShopAIPrimaryButtonStyle(isDisabled: !viewModel.canProceed))
+                .buttonStyle(ZokeyPrimaryButtonStyle(isDisabled: !viewModel.canProceed))
                 .disabled(!viewModel.canProceed)
                 .padding(.horizontal)
                 .padding(.bottom, Spacing.lg)

@@ -1,6 +1,6 @@
 //
 //  APIService.swift
-//  ShopAI
+//  Zokey
 //
 //  Network layer for backend API communication
 //

@@ -1,6 +1,6 @@
 //
 //  SubscriptionViewModel.swift
-//  ShopAI
+//  Zokey
 //
 //  Manages subscription state and purchases
 //
@@ -79,7 +79,7 @@ class SubscriptionViewModel: ObservableObject {
                 withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
                     showSuccessAnimation = true
                 }
-                successMessage = "Welcome to ShopAI Premium! 🎉"
+                successMessage = "Welcome to Zokey Premium! 🎉"
                 
                 // Dismiss success after delay
                 try? await Task.sleep(nanoseconds: 2_000_000_000)

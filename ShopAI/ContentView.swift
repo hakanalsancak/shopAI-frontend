@@ -1,6 +1,6 @@
 //
 //  ContentView.swift
-//  ShopAI
+//  Zokey
 //
 //  Main entry point view
 //

@@ -1,6 +1,6 @@
 //
 //  PaywallView.swift
-//  ShopAI
+//  Zokey
 //
 //  Subscription paywall with StoreKit integration
 //
@@ -222,7 +222,7 @@ struct PaywallView: View {
                 }
             }
         }
-        .buttonStyle(ShopAIPrimaryButtonStyle(isDisabled: viewModel.selectedPlan == nil || viewModel.isPurchasing))
+        .buttonStyle(ZokeyPrimaryButtonStyle(isDisabled: viewModel.selectedPlan == nil || viewModel.isPurchasing))
         .disabled(viewModel.selectedPlan == nil || viewModel.isPurchasing)
         .padding(.horizontal)
         .offset(y: animateIn ? 0 : 30)
@@ -335,6 +335,19 @@ struct PlanCard: View {
     var body: some View {
         Button(action: action) {
             HStack {
+                // Selection indicator
+                ZStack {
+                    Circle()
+                        .stroke(isSelected ? Color.shopaiPrimary : Color.gray.opacity(0.3), lineWidth: 2)
+                        .frame(width: 24, height: 24)
+                    
+                    if isSelected {
+                        Image(systemName: "checkmark")
+                            .font(.system(size: 12, weight: .bold))
+                            .foregroundColor(.shopaiPrimary)
+                    }
+                }
+                
                 VStack(alignment: .leading, spacing: Spacing.xs) {
                     HStack {
                         Text(plan.name)
@@ -375,12 +388,13 @@ struct PlanCard: View {
                     .fill(Color.white)
                     .overlay(
                         RoundedRectangle(cornerRadius: CornerRadius.large)
-                            .stroke(isSelected ? Color.shopaiPrimary : Color.clear, lineWidth: 3)
+                            .stroke(isSelected ? Color.shopaiPrimary : Color.gray.opacity(0.2), lineWidth: isSelected ? 2 : 1)
                     )
             )
             .shopaiSubtleShadow()
         }
         .buttonStyle(PlainButtonStyle())
+        .animation(.easeInOut(duration: 0.2), value: isSelected)
     }
 }
 
@@ -394,6 +408,19 @@ struct StoreKitPlanCard: View {
     var body: some View {
         Button(action: action) {
             HStack {
+                // Selection indicator
+                ZStack {
+                    Circle()
+                        .stroke(isSelected ? Color.shopaiPrimary : Color.gray.opacity(0.3), lineWidth: 2)
+                        .frame(width: 24, height: 24)
+                    
+                    if isSelected {
+                        Image(systemName: "checkmark")
+                            .font(.system(size: 12, weight: .bold))
+                            .foregroundColor(.shopaiPrimary)
+                    }
+                }
+                
                 VStack(alignment: .leading, spacing: Spacing.xs) {
                     HStack {
                         Text(product.displayName)
@@ -435,12 +462,13 @@ struct StoreKitPlanCard: View {
                     .fill(Color.white)
                     .overlay(
                         RoundedRectangle(cornerRadius: CornerRadius.large)
-                            .stroke(isSelected ? Color.shopaiPrimary : Color.clear, lineWidth: 3)
+                            .stroke(isSelected ? Color.shopaiPrimary : Color.gray.opacity(0.2), lineWidth: isSelected ? 2 : 1)
                     )
             )
             .shopaiSubtleShadow()
         }
         .buttonStyle(PlainButtonStyle())
+        .animation(.easeInOut(duration: 0.2), value: isSelected)
     }
 }
 

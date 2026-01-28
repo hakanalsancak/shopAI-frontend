@@ -1,6 +1,6 @@
 //
 //  Components.swift
-//  ShopAI
+//  Zokey
 //
 //  Reusable UI components
 //
@@ -309,7 +309,7 @@ struct ErrorView: View {
                 Button("Try Again") {
                     retryAction()
                 }
-                .buttonStyle(ShopAIPrimaryButtonStyle())
+                .buttonStyle(ZokeyPrimaryButtonStyle())
                 .frame(width: 150)
             }
         }

@@ -1,6 +1,6 @@
 //
 //  SearchViewModel.swift
-//  ShopAI
+//  Zokey
 //
 //  Manages the search flow and results
 //

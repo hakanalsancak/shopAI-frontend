@@ -1,6 +1,6 @@
 //
 //  HomeView.swift
-//  ShopAI
+//  Zokey
 //
 //  Category selection screen
 //

@@ -1,6 +1,6 @@
 //
 //  ProfileView.swift
-//  ShopAI
+//  Zokey
 //
 //  User profile and account management
 //
@@ -295,7 +295,7 @@ struct ProfileView: View {
     
     private var appInfoSection: some View {
         VStack(spacing: Spacing.sm) {
-            Text("ShopAI")
+            Text("Zokey")
                 .font(.shopaiHeadline)
                 .foregroundColor(.white.opacity(0.7))
             

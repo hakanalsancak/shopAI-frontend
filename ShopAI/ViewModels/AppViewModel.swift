@@ -1,6 +1,6 @@
 //
 //  AppViewModel.swift
-//  ShopAI
+//  Zokey
 //
 //  Main app state management
 //

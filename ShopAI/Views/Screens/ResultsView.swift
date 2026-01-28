@@ -1,6 +1,6 @@
 //
 //  ResultsView.swift
-//  ShopAI
+//  Zokey
 //
 //  Displays AI-ranked product recommendations
 //

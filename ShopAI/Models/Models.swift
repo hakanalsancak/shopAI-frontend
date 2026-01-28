@@ -1,6 +1,6 @@
 //
 //  Models.swift
-//  ShopAI
+//  Zokey
 //
 //  Core data models matching backend API responses
 //

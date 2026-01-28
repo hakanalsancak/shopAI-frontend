@@ -1,6 +1,6 @@
 //
 //  StoreKitService.swift
-//  ShopAI
+//  Zokey
 //
 //  Handles Apple StoreKit subscriptions
 //

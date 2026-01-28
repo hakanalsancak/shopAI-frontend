@@ -1,6 +1,6 @@
 //
 //  DesignSystem.swift
-//  ShopAI
+//  Zokey
 //
 //  Design tokens, colors, and reusable styles
 //
@@ -114,7 +114,7 @@ enum CornerRadius {
 
 // MARK: - Primary Button Style
 
-struct ShopAIPrimaryButtonStyle: ButtonStyle {
+struct ZokeyPrimaryButtonStyle: ButtonStyle {
     var isDisabled: Bool = false
     
     func makeBody(configuration: Configuration) -> some View {
@@ -142,7 +142,7 @@ struct ShopAIPrimaryButtonStyle: ButtonStyle {
 
 // MARK: - Secondary Button Style
 
-struct ShopAISecondaryButtonStyle: ButtonStyle {
+struct ZokeySecondaryButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.shopaiHeadline)
@@ -158,7 +158,7 @@ struct ShopAISecondaryButtonStyle: ButtonStyle {
 
 // MARK: - Card Style
 
-struct ShopAICardModifier: ViewModifier {
+struct ZokeyCardModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .background(Color.shopaiCardBackground)
@@ -169,7 +169,7 @@ struct ShopAICardModifier: ViewModifier {
 
 extension View {
     func shopaiCard() -> some View {
-        modifier(ShopAICardModifier())
+        modifier(ZokeyCardModifier())
     }
 }
 
