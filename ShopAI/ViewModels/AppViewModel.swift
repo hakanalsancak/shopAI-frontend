@@ -158,6 +158,15 @@ class AppViewModel: ObservableObject {
         }
     }
     
+    // Reset free searches (TESTING ONLY)
+    func resetFreeSearches() async {
+        do {
+            userStatus = try await apiService.resetFreeSearches()
+        } catch {
+            print("Failed to reset free searches: \(error)")
+        }
+    }
+    
     // MARK: - Category Selection
     
     func selectCategory(_ category: Category) {

@@ -188,6 +188,12 @@ class APIService: ObservableObject {
         return try await performRequest(request)
     }
     
+    // Reset free searches (TESTING ONLY)
+    func resetFreeSearches() async throws -> UserStatusResponse {
+        let request = try buildRequest(endpoint: "/auth/reset-searches", method: "POST", authenticated: true)
+        return try await performRequest(request)
+    }
+    
     // MARK: - Category Endpoints
     
     func getCategories(currency: String = "GBP") async throws -> [Category] {

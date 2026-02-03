@@ -260,6 +260,16 @@ struct ProfileView: View {
                     }
                 }
             }
+            
+            // Testing only - Reset free searches
+            Divider()
+                .padding(.leading, 56)
+            
+            settingsRow(icon: "arrow.triangle.2.circlepath", title: "Reset Free Searches (Test)", showArrow: false) {
+                Task {
+                    await appViewModel.resetFreeSearches()
+                }
+            }
         }
         .background(Color.white)
         .cornerRadius(CornerRadius.large)
