@@ -14,8 +14,7 @@ struct QuestionFlowView: View {
     @StateObject private var viewModel = SearchViewModel()
     @Environment(\.dismiss) private var dismiss
     
-    @State private var mvpProduct: MVPProduct?
-    @State private var showMVPResult = false
+    @State private var mvpResult: MVPResultItem?
     
     var body: some View {
         ZStack {
@@ -54,9 +53,9 @@ struct QuestionFlowView: View {
                     .foregroundColor(.white)
             }
         }
-        .fullScreenCover(isPresented: $showMVPResult) {
+        .fullScreenCover(item: $mvpResult) { result in
             MVPResultView(
-                product: mvpProduct,
+                product: result.product,
                 subcategoryName: viewModel.subcategoryName
             )
         }
@@ -123,11 +122,9 @@ struct QuestionFlowView: View {
                        let answerValue = viewModel.getStringAnswer(for: question.id),
                        let option = question.options?.first(where: { $0.value == answerValue }),
                        let product = MVPProductData.getProduct(subcategoryId: subcategory.id, optionId: option.id) {
-                        mvpProduct = product
-                        showMVPResult = true
+                        mvpResult = MVPResultItem(product: product)
                     } else {
-                        mvpProduct = nil
-                        showMVPResult = true
+                        mvpResult = MVPResultItem(product: nil)
                     }
                 } label: {
                     HStack {

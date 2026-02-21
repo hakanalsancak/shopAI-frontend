@@ -13,6 +13,11 @@ struct MVPProduct {
     let url: String
 }
 
+struct MVPResultItem: Identifiable {
+    let id = UUID()
+    let product: MVPProduct?
+}
+
 struct MVPProductData {
     static func getProduct(subcategoryId: String, optionId: String) -> MVPProduct? {
         return products[subcategoryId]?[optionId]
