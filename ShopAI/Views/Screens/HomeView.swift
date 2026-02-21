@@ -60,9 +60,6 @@ struct HomeView: View {
             .navigationDestination(item: $appViewModel.selectedSubcategory) { subcategory in
                 QuestionFlowView(subcategory: subcategory)
             }
-            .sheet(isPresented: $appViewModel.showPaywall) {
-                PaywallView()
-            }
             .sheet(isPresented: $showProfile) {
                 ProfileView()
             }
@@ -89,7 +86,7 @@ struct HomeView: View {
                     Button {
                         showProfile = true
                     } label: {
-                        Image(systemName: appViewModel.hasActiveSubscription ? "person.crop.circle.fill.badge.checkmark" : "person.crop.circle.fill")
+                        Image(systemName: "person.crop.circle.fill")
                             .font(.system(size: 28))
                             .foregroundColor(.white)
                             .shadow(color: Color.black.opacity(0.2), radius: 4, x: 0, y: 2)

@@ -10,7 +10,6 @@ import SwiftUI
 struct ProfileView: View {
     @EnvironmentObject var appViewModel: AppViewModel
     @Environment(\.dismiss) private var dismiss
-    @State private var showPaywall = false
     
     var body: some View {
         NavigationStack {
@@ -23,9 +22,6 @@ struct ProfileView: View {
                     VStack(spacing: Spacing.lg) {
                         // Profile Header
                         profileHeader
-                        
-                        // Subscription Card
-                        subscriptionCard
                         
                         // Stats Card
                         statsCard
@@ -53,9 +49,6 @@ struct ProfileView: View {
                     }
                 }
             }
-            .sheet(isPresented: $showPaywall) {
-                PaywallView()
-            }
         }
     }
     
@@ -77,87 +70,12 @@ struct ProfileView: View {
             
             // User Info
             VStack(spacing: Spacing.xs) {
-                Text(appViewModel.hasActiveSubscription ? "Premium Member" : "Free User")
+                Text("Your Profile")
                     .font(.shopaiTitle3)
                     .foregroundColor(.white)
-                
-                if appViewModel.hasActiveSubscription {
-                    HStack(spacing: 4) {
-                        Image(systemName: "crown.fill")
-                            .font(.caption)
-                        Text("Unlimited Searches")
-                            .font(.shopaiCaption)
-                    }
-                    .foregroundColor(.shopaiWarning)
-                }
             }
         }
         .padding(.vertical, Spacing.md)
-    }
-    
-    // MARK: - Subscription Card
-    
-    private var subscriptionCard: some View {
-        VStack(spacing: Spacing.md) {
-            HStack {
-                VStack(alignment: .leading, spacing: Spacing.xs) {
-                    Text("Subscription")
-                        .font(.shopaiHeadline)
-                        .foregroundColor(.shopaiCardTextPrimary)
-                    
-                    Text(appViewModel.hasActiveSubscription ? "Premium Active" : "Free Plan")
-                        .font(.shopaiSubheadline)
-                        .foregroundColor(.shopaiCardTextSecondary)
-                }
-                
-                Spacer()
-                
-                if appViewModel.hasActiveSubscription {
-                    Image(systemName: "checkmark.seal.fill")
-                        .font(.title)
-                        .foregroundColor(.shopaiSuccess)
-                } else {
-                    Image(systemName: "crown")
-                        .font(.title)
-                        .foregroundColor(.shopaiPrimary)
-                }
-            }
-            
-            if !appViewModel.hasActiveSubscription {
-                Button {
-                    showPaywall = true
-                } label: {
-                    HStack {
-                        Image(systemName: "crown.fill")
-                        Text("Upgrade to Premium")
-                    }
-                    .font(.shopaiHeadline)
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, Spacing.md)
-                    .background(
-                        LinearGradient(
-                            colors: [Color.shopaiPrimary, Color.shopaiPrimaryDark],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                    )
-                    .cornerRadius(CornerRadius.medium)
-                }
-            } else {
-                // Show expiration date if available
-                if let expiresAt = appViewModel.userStatus?.subscriptionExpiresAt {
-                    Text("Renews: \(formatDate(expiresAt))")
-                        .font(.shopaiCaption)
-                        .foregroundColor(.shopaiCardTextSecondary)
-                }
-            }
-        }
-        .padding(Spacing.md)
-        .background(Color.white)
-        .cornerRadius(CornerRadius.large)
-        .shopaiCardShadow()
-        .padding(.horizontal)
     }
     
     // MARK: - Stats Card
@@ -170,21 +88,6 @@ struct ProfileView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             
             HStack(spacing: Spacing.lg) {
-                // Free Searches
-                VStack(spacing: Spacing.xs) {
-                    Text("\(appViewModel.freeSearchesRemaining)")
-                        .font(.shopaiTitle)
-                        .foregroundColor(.shopaiPrimary)
-                    
-                    Text("Free Searches")
-                        .font(.shopaiCaption)
-                        .foregroundColor(.shopaiCardTextSecondary)
-                }
-                .frame(maxWidth: .infinity)
-                
-                Divider()
-                    .frame(height: 40)
-                
                 // Region
                 VStack(spacing: Spacing.xs) {
                     Text(appViewModel.region)
@@ -248,28 +151,6 @@ struct ProfileView: View {
             settingsRow(icon: "hand.raised.fill", title: "Privacy Policy", showArrow: true) {
                 // Handle privacy
             }
-            
-            if appViewModel.hasActiveSubscription {
-                Divider()
-                    .padding(.leading, 56)
-                
-                settingsRow(icon: "arrow.counterclockwise", title: "Restore Purchases", showArrow: false) {
-                    // Handle restore
-                    Task {
-                        await appViewModel.refreshUserStatus()
-                    }
-                }
-            }
-            
-            // Testing only - Reset free searches
-            Divider()
-                .padding(.leading, 56)
-            
-            settingsRow(icon: "arrow.triangle.2.circlepath", title: "Reset Free Searches (Test)", showArrow: false) {
-                Task {
-                    await appViewModel.resetFreeSearches()
-                }
-            }
         }
         .background(Color.white)
         .cornerRadius(CornerRadius.large)
@@ -320,17 +201,6 @@ struct ProfileView: View {
         .padding(.top, Spacing.lg)
     }
     
-    // MARK: - Helper Functions
-    
-    private func formatDate(_ dateString: String) -> String {
-        let formatter = ISO8601DateFormatter()
-        if let date = formatter.date(from: dateString) {
-            let displayFormatter = DateFormatter()
-            displayFormatter.dateStyle = .medium
-            return displayFormatter.string(from: date)
-        }
-        return dateString
-    }
 }
 
 // MARK: - Preview

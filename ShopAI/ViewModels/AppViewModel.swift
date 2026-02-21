@@ -23,7 +23,6 @@ class AppViewModel: ObservableObject {
     // Navigation state
     @Published var selectedCategory: Category?
     @Published var selectedSubcategory: Subcategory?
-    @Published var showPaywall: Bool = false
     
     // Region settings
     @Published var region: String = "UK"
@@ -32,20 +31,11 @@ class AppViewModel: ObservableObject {
     // MARK: - Services
     
     private let apiService = APIService.shared
-    private let storeKitService = StoreKitService.shared
     
     // MARK: - Computed Properties
     
-    var freeSearchesRemaining: Int {
-        userStatus?.freeSearchesRemaining ?? 3
-    }
-    
-    var hasActiveSubscription: Bool {
-        userStatus?.subscriptionStatus == .active || storeKitService.hasActiveSubscription
-    }
-    
     var canSearch: Bool {
-        hasActiveSubscription || freeSearchesRemaining > 0
+        true
     }
     
     var currencySymbol: String {
@@ -158,15 +148,6 @@ class AppViewModel: ObservableObject {
         }
     }
     
-    // Reset free searches (TESTING ONLY)
-    func resetFreeSearches() async {
-        do {
-            userStatus = try await apiService.resetFreeSearches()
-        } catch {
-            print("Failed to reset free searches: \(error)")
-        }
-    }
-    
     // MARK: - Category Selection
     
     func selectCategory(_ category: Category) {
@@ -174,12 +155,6 @@ class AppViewModel: ObservableObject {
     }
     
     func selectSubcategory(_ subcategory: Subcategory) {
-        // Check if user can search
-        if !canSearch {
-            showPaywall = true
-            return
-        }
-        
         selectedSubcategory = subcategory
     }
     

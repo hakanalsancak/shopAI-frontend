@@ -23,7 +23,6 @@ class SearchViewModel: ObservableObject {
     
     @Published var searchResults: RecommendationResponse?
     @Published var showResults: Bool = false
-    @Published var showLimitReached: Bool = false
     
     // Category info
     @Published var categoryName: String = ""
@@ -155,7 +154,6 @@ class SearchViewModel: ObservableObject {
     func performSearch(subcategoryId: String) async {
         isSearching = true
         errorMessage = nil
-        showLimitReached = false
         
         do {
             // Convert answers to SearchAnswer array
@@ -172,8 +170,6 @@ class SearchViewModel: ObservableObject {
                 showResults = true
             }
             
-        } catch APIServiceError.limitReached {
-            showLimitReached = true
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -189,7 +185,6 @@ class SearchViewModel: ObservableObject {
         answers = [:]
         searchResults = nil
         showResults = false
-        showLimitReached = false
         errorMessage = nil
     }
 }

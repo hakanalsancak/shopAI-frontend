@@ -14,7 +14,8 @@ struct QuestionFlowView: View {
     @StateObject private var viewModel = SearchViewModel()
     @Environment(\.dismiss) private var dismiss
     
-    @State private var showResultsView = false
+    @State private var mvpProduct: MVPProduct?
+    @State private var showMVPResult = false
     
     var body: some View {
         ZStack {
@@ -23,8 +24,6 @@ struct QuestionFlowView: View {
             
             if viewModel.isLoadingQuestions {
                 LoadingView(message: "Preparing questions...")
-            } else if viewModel.isSearching {
-                SearchingView()
             } else if let error = viewModel.errorMessage {
                 ErrorView(message: error) {
                     Task {
@@ -39,15 +38,11 @@ struct QuestionFlowView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button {
-                    if viewModel.currentQuestionIndex > 0 {
-                        viewModel.previousQuestion()
-                    } else {
-                        dismiss()
-                    }
+                    dismiss()
                 } label: {
                     HStack(spacing: 4) {
                         Image(systemName: "chevron.left")
-                        Text(viewModel.currentQuestionIndex > 0 ? "Back" : "Cancel")
+                        Text("Back")
                     }
                     .foregroundColor(.white)
                 }
@@ -59,23 +54,15 @@ struct QuestionFlowView: View {
                     .foregroundColor(.white)
             }
         }
-        .fullScreenCover(isPresented: $showResultsView) {
-            if let results = viewModel.searchResults {
-                ResultsView(results: results)
-                    .environmentObject(appViewModel)
-            }
-        }
-        .sheet(isPresented: $viewModel.showLimitReached) {
-            PaywallView()
+        .fullScreenCover(isPresented: $showMVPResult) {
+            MVPResultView(
+                product: mvpProduct,
+                subcategoryName: viewModel.subcategoryName
+            )
         }
         .onAppear {
             Task {
                 await viewModel.loadQuestions(for: subcategory, currency: appViewModel.currency)
-            }
-        }
-        .onChange(of: viewModel.showResults) { _, newValue in
-            if newValue {
-                showResultsView = true
             }
         }
     }
@@ -132,23 +119,20 @@ struct QuestionFlowView: View {
                 }
                 
                 Button {
-                    if viewModel.isLastQuestion {
-                        // Perform search
-                        Task {
-                            await viewModel.performSearch(subcategoryId: subcategory.id)
-                        }
+                    if let question = viewModel.currentQuestion,
+                       let answerValue = viewModel.getStringAnswer(for: question.id),
+                       let option = question.options?.first(where: { $0.value == answerValue }),
+                       let product = MVPProductData.getProduct(subcategoryId: subcategory.id, optionId: option.id) {
+                        mvpProduct = product
+                        showMVPResult = true
                     } else {
-                        viewModel.nextQuestion()
+                        mvpProduct = nil
+                        showMVPResult = true
                     }
                 } label: {
                     HStack {
-                        Text(viewModel.isLastQuestion ? "Find Products" : "Continue")
-                        
-                        if viewModel.isLastQuestion {
-                            Image(systemName: "sparkles")
-                        } else {
-                            Image(systemName: "arrow.right")
-                        }
+                        Text("Find Product")
+                        Image(systemName: "sparkles")
                     }
                 }
                 .buttonStyle(ZokeyPrimaryButtonStyle(isDisabled: !viewModel.canProceed))
