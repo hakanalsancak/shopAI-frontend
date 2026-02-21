@@ -11,12 +11,12 @@ import Combine
 // MARK: - API Configuration
 
 enum APIConfig {
-    // Change this to your Vercel deployment URL in production
+    // Change this to your Render deployment URL in production
     // For local testing, use your computer's IP (not localhost for simulator)
     #if DEBUG
     static let baseURL = "http://localhost:3000/api"
     #else
-    static let baseURL = "https://your-app.vercel.app/api"
+    static let baseURL = "https://your-service-name.onrender.com/api"
     #endif
     
     static let timeout: TimeInterval = 30
